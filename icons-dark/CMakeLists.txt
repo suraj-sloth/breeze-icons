@@ -13,8 +13,8 @@ set(BREEZE_INSTALL_DIR ${KDE_INSTALL_FULL_ICONDIR}/breeze-dark)
 # Auto-generate 24px monochrome icons from 22px versions
 if(NOT WIN32)
     add_custom_target(breeze-generate-24px-versions-dark ALL
-        COMMENT "Generating 24px icons dark"
-        COMMAND ${BASH_EXE} ${CMAKE_SOURCE_DIR}/generate-24px-versions.sh ${CMAKE_CURRENT_BINARY_DIR}/generated/
+        COMMENT "Generating 24px icons-dark"
+        COMMAND ${PYTHON3_EXE} ${CMAKE_SOURCE_DIR}/generate-24px-versions.py ${CMAKE_CURRENT_BINARY_DIR}/generated/
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
     if (TARGET breeze-validate-svg)

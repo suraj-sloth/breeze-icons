@@ -87,8 +87,8 @@ endif()
 
 if(NOT WIN32)
     # generate-24px in subdirs.
-    find_program(BASH_EXE bash)
-    add_feature_info("24x24 generation" BASH_EXE "'bash' is required to generate 24x24 variants")
+    find_program(PYTHON3_EXE python3)
+    add_feature_info("24x24 generation" PYTHON3_EXE "'python3' is required to generate 24x24 variants")
 
     # validate
     find_program(SH_EXE sh)
