@@ -87,8 +87,16 @@ endif()
 
 if(NOT WIN32)
     # generate-24px in subdirs.
-    find_program(PYTHON3_EXE python3)
-    add_feature_info("24x24 generation" PYTHON3_EXE "'python3' is required to generate 24x24 variants")
+    find_package(Python3)
+    ${Python3_EXECUTABLE} -c "
+import sys
+try:
+   from lxml import etree
+except:
+  sys.exit(1)
+sys.exit(0)
+"
+    add_feature_info("24x24 generation" Python3_FOUND AND Python3_EXECUTABLE "Python 3 is required to generate 24x24 variants")
 
     # validate
     find_program(SH_EXE sh)

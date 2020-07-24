@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-SPDX-License-Identifier: LicenseRef-KDE-Accepted-LGPL
+SPDX-License-Identifier: LGPL-2.1-only OR LGPL-3.0-only OR LicenseRef-KDE-Accepted-LGPL
 SPDX-FileCopyrightText: 2020 Noah Davis <noahadvs@gmail.com>
 SPDX-FileCopyrightText: 2020 Niccolò Venerandi <niccolo@venerandi.com>
 """
@@ -114,26 +114,25 @@ def main():
                 - Checking against real values because string values can have leading zeros.
                 - Replacing "px" with nothing so that values can be converted to real numbers and because px is the default unit type
                     - If another unit type is used in the <svg> element, this script will fail, but icons shouldn't use other unit types anyway
-                - Using these if/else things to prevent string functions from being used on None.
                 """
 
                 # This is used to prevent SVGs with non-square or incorrect but valid viewBoxes from being converted to 24x24.
                 # If viewBox is None, but the SVG still has width and height, the SVG is still fine.
-                viewBox_matched_or_none = (
-                    list(map(float, strip_split(root.get('viewBox').strip('px'))))
-                    == [0.0, 0.0, 22.0, 22.0]
-                    if not viewBox_is_none
-                    else viewBox_is_none
-                )
+                viewBox_matched_or_none = viewBox_is_none
+                if not viewBox_is_none:
+                    viewBox_matched_or_none = (
+                        list(map(float, strip_split(root.get('viewBox').strip('px'))))
+                        == [0.0, 0.0, 22.0, 22.0]
+                    )
 
                 # This is used to prevent SVGs that aren't square or are missing only height or only width from being converted to 24x24.
                 # If width and height are None, but the SVG still has a viewBox, the SVG is still fine.
-                width_height_matched_or_none = (
-                    float(root.get('width').strip('px').strip()) == 22.0 and
-                    float(root.get('height').strip('px').strip()) == 22.0
-                    if not (width_is_none or height_is_none)
-                    else width_is_none and height_is_none
-                )
+                width_height_matched_or_none = width_is_none and height_is_none
+                if not (width_is_none or height_is_none):
+                    width_height_matched_or_none = (
+                        float(root.get('width').strip('px').strip()) == 22.0 and
+                        float(root.get('height').strip('px').strip()) == 22.0
+                    )
 
                 if (width_height_matched_or_none and viewBox_matched_or_none
                         and not (viewBox_is_none and (width_is_none or height_is_none))):
@@ -164,9 +163,5 @@ def main():
 # END defs
 
 
-# BEGIN program
-
 if __name__ == '__main__':
     sys.exit(main())
-
-# END program
